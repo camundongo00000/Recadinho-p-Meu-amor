@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mensagem ❤️</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+        }
+
+        button {
+            font-size: 20px;
+            padding: 12px 25px;
+            cursor: pointer;
+            border: none;
+            border-radius: 20px;
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 20px;
+            color: #800020;
+            text-align: center;
+            min-height: 30px;
+        }
+
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            font-size: 24px;
+            animation: subir linear forwards;
+        }
+
+        @keyframes subir {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-110vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button id="botao" onclick="iniciar()">❤️ Clique aqui</button>
+
+    <div id="mensagem"></div>
+
+    <!-- Música (coloque mil_anos.mp3 na mesma pasta) -->
+    <audio id="musica" src="mil_anos.mp3" autoplay muted loop></audio>
+
+    <script>
+        const texto = "Eu te amo e amarei pra sempre, Lara Brandão";
+        let index = 0;
+        let digitando = false;
+
+        // tenta iniciar a música sozinha (mutada)
+        window.onload = () => {
+            const musica = document.getElementById("musica");
+            musica.play().catch(() => {});
+        };
+
+        function iniciar() {
+            if (digitando) return;
+            digitando = true;
+
+            const musica = document.getElementById("musica");
+            musica.muted = false; // libera o som no clique
+            musica.play();
+
+            document.getElementById("botao").style.display = "none";
+
+            setInterval(criarCoracao, 400);
+            escreverTexto();
+        }
+
+        function escreverTexto() {
+            if (index < texto.length) {
+                const caractere = texto.charAt(index);
+
+                if (caractere === " ") {
+                    document.getElementById("mensagem").innerHTML += "&nbsp;";
+                } else {
+                    document.getElementById("mensagem").innerText += caractere;
+                }
+
+                index++;
+                setTimeout(escreverTexto, 80); // velocidade da digitação
+            }
+        }
+
+        function criarCoracao() {
+            const coracao = document.createElement("div");
+            coracao.className = "heart";
+            coracao.innerText = "❤️";
+
+            coracao.style.left = Math.random() * 100 + "vw";
+            coracao.style.animationDuration =
+                (Math.random() * 3 + 3) + "s";
+
+            document.body.appendChild(coracao);
+
+            setTimeout(() => {
+                coracao.remove();
+            }, 6000);
+        }
+    </script>
+
+</body>
+  </html>
+  
